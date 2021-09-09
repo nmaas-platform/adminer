@@ -8,4 +8,4 @@ maintainers:
 sources:
 - https://github.com/vrana/adminer
 - https://hub.docker.com/_/adminer/
-version: 2.0.8
+version: 2.0.9
