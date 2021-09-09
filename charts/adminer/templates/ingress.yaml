@@ -1,0 +1,56 @@
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "fullname" . -}}
+{{- $servicePort := .Values.service.port -}}
+{{- $kubeVersion := .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.19-0" $kubeVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- if .Values.ingress.tls.acme }}
+    kubernetes.io/tls-acme: "{{ .Values.ingress.tls.acme }}"
+    certmanager.k8s.io/cluster-issuer: "{{ .Values.ingress.tls.certOrIssuer }}"
+    {{- end }}
+    kubernetes.io/ingress.class: "{{ .Values.ingress.class }}"
+spec:
+  rules:
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: /
+            {{- if semverCompare ">=1.19-0" $kubeVersion }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: {{ $servicePort }}
+            {{- else }}      
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+            {{- end }}
+    {{- end -}}
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    {{- range $host := .Values.ingress.hosts }}
+    - {{ $host }}
+    {{- end -}}
+    {{- if .Values.ingress.tls.acme }}
+    secretName: {{ .Release.Name }}-tls
+    {{- else }}
+    secretName: {{ .Values.ingress.tls.certOrIssuer }}
+    {{- end }}
+  {{- end -}}
+{{- end -}}
