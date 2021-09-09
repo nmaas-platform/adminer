@@ -3,6 +3,21 @@ entries:
   nmaas-adminer:
   - apiVersion: v2
     appVersion: 4.8.1
+    created: "2021-09-09T13:44:44.472380245Z"
+    description: GEANT NMaaS Adminer Helm chart for Kubernetes
+    digest: d1831f7287812fc61dcf394d178783b513bfc3d7e7aa7d72c724af78dbf1f5ff
+    maintainers:
+    - email: nmaas-dev@lists.geant.org
+      name: nmaas-platform
+    name: nmaas-adminer
+    sources:
+    - https://github.com/vrana/adminer
+    - https://hub.docker.com/_/adminer/
+    urls:
+    - https://github.com/nmaas-platform/adminer/releases/download/nmaas-adminer-2.0.9/nmaas-adminer-2.0.9.tgz
+    version: 2.0.9
+  - apiVersion: v2
+    appVersion: 4.8.1
     created: "2021-09-09T13:32:25.187359539Z"
     description: GEANT NMaaS Adminer Helm chart for Kubernetes
     digest: 0829cd8f83d4f6565122dc48977b438aa5fe1d54fa356a0360e209c7182a85ec
@@ -16,4 +31,4 @@ entries:
     urls:
     - https://github.com/nmaas-platform/adminer/releases/download/nmaas-adminer-2.0.8/nmaas-adminer-2.0.8.tgz
     version: 2.0.8
-generated: "2021-09-09T13:32:25.18736534Z"
+generated: "2021-09-09T13:44:44.472389645Z"
